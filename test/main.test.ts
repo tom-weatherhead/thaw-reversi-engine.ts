@@ -2,9 +2,10 @@
 
 'use strict';
 
-import { testDescriptors } from '../lib/main';
+// import { testDescriptors } from '../lib/main';
+import * as engine from '..';
 
-for (const testDescriptor of testDescriptors) {
+for (const testDescriptor of engine.testDescriptors) {
 	test(testDescriptor.name, () => {
 		// Arrange
 		const initialData = testDescriptor.arrangeFunction();

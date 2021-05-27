@@ -1,22 +1,31 @@
-sudo: false
 language: node_js
+os:
+  - linux
+  - osx
+  - windows
+dist: focal
+osx_image: xcode12.5
 node_js:
-  - node
+  - 16
+  - 14
+  - 12
+  - 10
 branches:
   only:
     - master
 cache:
   directories:
     - node_modules
-before_install:
-  - npm update
 install:
+  - npm set progress=false
   - npm install
 before_script:
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-  - chmod +x ./cc-test-reporter
-  - ./cc-test-reporter before-build
+  - if [ "$TRAVIS_OS_NAME" = "linux" -a "$TRAVIS_NODE_VERSION" = "14" ]; then curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter && ./cc-test-reporter before-build ; fi
 script:
-  - npm run travis
+  - npm run prettier-check
+  - npm run lint
+  - npm run build
+  - npm run rollup
+  - npm test
 after_script:
-  - ./cc-test-reporter after-build -t lcov --debug --exit-code $TRAVIS_TEST_RESULT
+  - if [ "$TRAVIS_OS_NAME" = "linux" -a "$TRAVIS_NODE_VERSION" = "14" ]; then ./cc-test-reporter after-build -t lcov --debug --exit-code $TRAVIS_TEST_RESULT ; fi

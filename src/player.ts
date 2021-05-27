@@ -4,7 +4,7 @@ import { getRandomArrayElement } from 'thaw-common-utilities.ts';
 
 import {
 	blackPlayerToken,
-	Board,
+	// Board,
 	boardArea,
 	boardHeight,
 	boardWidth,
@@ -16,7 +16,7 @@ import { PlayerColour } from './player-colour';
 
 export interface IFindBestMovesResult {
 	bestColumn: number;
-	bestMoves: any[];
+	bestMoves: ICoordinates[];
 	bestRow: number;
 	bestScore: number;
 }

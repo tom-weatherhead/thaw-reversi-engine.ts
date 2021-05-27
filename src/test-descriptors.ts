@@ -6,13 +6,22 @@ import { whitePlayerToken } from './board';
 import {
 	createInitialState,
 	getURLFriendlyBoardStringFromGameState,
+	IGameState,
 	moveAutomatically
 } from './engine';
+import { IFindBestMovesResult } from './player';
 
 const defaultPlayer = whitePlayerToken;
 const defaultMaxPly = 5;
 
-function createInitialDataForStartOfGame() {
+interface IInitialData {
+	boardAsString: string;
+	gameState: IGameState;
+	maxPly: number;
+	player: string;
+}
+
+function createInitialDataForStartOfGame(): IInitialData {
 	const gameState = createInitialState();
 
 	return {
@@ -34,14 +43,14 @@ export const testDescriptors = [
 		// . . . . . . . .
 		// . . . . . . . .
 		name: 'InitialBoardStringTest',
-		arrangeFunction: () => createInitialDataForStartOfGame(),
-		actFunction: (initialData: any): any => {
+		arrangeFunction: (): IInitialData => createInitialDataForStartOfGame(),
+		actFunction: (initialData: IInitialData): string => {
 			return initialData.gameState.game.board.getPrintedBoardAsString();
 		},
 		assertFunction: (
-			initialData: any,
-			expect: any,
-			result: any
+			initialData: IInitialData,
+			expect: jest.Expect,
+			result: string
 		): void => {
 			const expectedResult = [
 				'8  + + + +',
@@ -70,17 +79,14 @@ export const testDescriptors = [
 		// . . . . . . . .
 		// . . . . . . . .
 		name: 'FirstMoveTest',
-		arrangeFunction: () => createInitialDataForStartOfGame(),
-		actFunction: (initialData: any): any => {
-			return moveAutomatically(
-				initialData.gameState,
-				initialData.maxPly
-			);
+		arrangeFunction: (): IInitialData => createInitialDataForStartOfGame(),
+		actFunction: (initialData: IInitialData): IGameState => {
+			return moveAutomatically(initialData.gameState, initialData.maxPly);
 		},
 		assertFunction: (
-			initialData: any,
-			expect: any,
-			result: any
+			initialData: IInitialData,
+			expect: jest.Expect,
+			result: IGameState
 		): void => {
 			expect(result).toBeTruthy();
 
@@ -106,16 +112,16 @@ export const testDescriptors = [
 	{
 		name: 'UndoTest',
 		doNotTestThroughWebService: true,
-		arrangeFunction: () => createInitialDataForStartOfGame(),
-		actFunction: (initialData: any): any => {
+		arrangeFunction: (): IInitialData => createInitialDataForStartOfGame(),
+		actFunction: (initialData: IInitialData): IFindBestMovesResult => {
 			return initialData.gameState.player.findBestMove(
 				initialData.maxPly
 			);
 		},
 		assertFunction: (
-			initialData: any,
-			expect: any,
-			result: any
+			initialData: IInitialData,
+			expect: jest.Expect,
+			result: IFindBestMovesResult
 		): void => {
 			const actualBoardAsString = getURLFriendlyBoardStringFromGameState(
 				initialData.gameState

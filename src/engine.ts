@@ -2,7 +2,7 @@
 
 'use strict';
 
-import { blackPlayerToken, whitePlayerToken } from './board';
+import { blackPlayerToken } from './board';
 import { Game } from './game';
 import { IFindBestMovesResult, Player } from './player';
 

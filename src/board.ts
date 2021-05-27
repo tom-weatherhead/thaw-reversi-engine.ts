@@ -26,25 +26,18 @@ interface IPlacePieceResult {
 
 export class Board {
 	public static createInitialBoardString(): string {
-		const boardArray = createArrayFromElement(
-			emptySquareToken,
-			boardArea
-		);
+		const boardArray = createArrayFromElement(emptySquareToken, boardArea);
 		const halfWidth = Math.floor(boardWidth / 2);
 		const halfHeight = Math.floor(boardHeight / 2);
 
 		// JavaScript strings are immutable.
 		// See https://stackoverflow.com/questions/1431094/how-do-i-replace-a-character-at-a-particular-index-in-javascript
 		// Change boardArray before the join() instead of trying to change the resulting string after.
-		boardArray[
-			(halfHeight - 1) * boardWidth + halfWidth - 1
-		] = whitePlayerToken;
-		boardArray[
-			(halfHeight - 1) * boardWidth + halfWidth
-		] = blackPlayerToken;
-		boardArray[
-			halfHeight * boardWidth + halfWidth - 1
-		] = blackPlayerToken;
+		boardArray[(halfHeight - 1) * boardWidth + halfWidth - 1] =
+			whitePlayerToken;
+		boardArray[(halfHeight - 1) * boardWidth + halfWidth] =
+			blackPlayerToken;
+		boardArray[halfHeight * boardWidth + halfWidth - 1] = blackPlayerToken;
 		boardArray[halfHeight * boardWidth + halfWidth] = whitePlayerToken;
 
 		return boardArray.join('');
@@ -68,7 +61,7 @@ export class Board {
 		);
 	}
 
-	public getAsString() {
+	public getAsString(): string {
 		return this.generateAsString();
 	}
 
@@ -91,11 +84,7 @@ export class Board {
 		return this.boardArray[row * boardWidth + column];
 	}
 
-	public setSquareState(
-		row: number,
-		column: number,
-		player?: Player
-	): void {
+	public setSquareState(row: number, column: number, player?: Player): void {
 		if (!this.areCoordinatesOnBoard(row, column)) {
 			throw new Error(
 				'Board.setSquareState() : Coordinates are off the board.'
@@ -153,9 +142,8 @@ export class Board {
 			}
 
 			if (canFlipInThisDirection && undoBuffer.length > 0) {
-				returnObject.flippedPieces = returnObject.flippedPieces.concat(
-					undoBuffer
-				);
+				returnObject.flippedPieces =
+					returnObject.flippedPieces.concat(undoBuffer);
 			}
 		}
 
@@ -168,8 +156,7 @@ export class Board {
 
 		for (const coord of returnObject.flippedPieces) {
 			this.setSquareState(coord.row, coord.column, player);
-			returnObject.score +=
-				2 * this.squareScore(coord.row, coord.column);
+			returnObject.score += 2 * this.squareScore(coord.row, coord.column);
 		}
 
 		this.setSquareState(row, column, player);
@@ -264,9 +251,7 @@ export class Board {
 	private generateAsString(): string {
 		return this.boardArray
 			.map((player?: Player): string =>
-				typeof player !== 'undefined'
-					? player.token
-					: emptySquareToken
+				typeof player !== 'undefined' ? player.token : emptySquareToken
 			)
 			.join('');
 	}

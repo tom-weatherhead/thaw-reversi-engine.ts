@@ -1,6 +1,6 @@
 {
 	"endOfLine": "lf",
-	"printWidth": 78,
+	"printWidth": 80,
 	"quoteProps": "consistent",
 	"singleQuote": true,
 	"tabWidth": 4,

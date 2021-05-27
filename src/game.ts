@@ -5,7 +5,8 @@ import { Player } from './player';
 import { PlayerColour } from './player-colour';
 
 export class Game {
-	public static readonly initialBoardAsString = Board.createInitialBoardString();
+	public static readonly initialBoardAsString =
+		Board.createInitialBoardString();
 
 	public readonly victoryScore: number;
 	public readonly board: Board;
@@ -30,11 +31,7 @@ export class Game {
 		this.whitePlayer.opponent = this.blackPlayer;
 		this.blackPlayer.opponent = this.whitePlayer;
 
-		this.board = new Board(
-			this.whitePlayer,
-			this.blackPlayer,
-			boardString
-		);
+		this.board = new Board(this.whitePlayer, this.blackPlayer, boardString);
 	}
 
 	public noLegalMovesForPlayer(player: Player): boolean {
